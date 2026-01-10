@@ -1,58 +1,52 @@
-class LottoNumbers extends HTMLElement {
+class DinnerMenu extends HTMLElement {
     constructor() {
         super();
         this.attachShadow({ mode: 'open' });
-        this.numbers = new Set();
+        this.menus = [
+            'Pizza', 'Burger', 'Sushi', 'Pasta', 'Kimchi Stew', 
+            'Bibimbap', 'Fried Chicken', 'Tacos', 'Ramen', 'Steak',
+            'Tteokbokki', 'Gimbap', 'Pork Cutlet', 'Samgyeopsal'
+        ];
+        this.selectedMenu = '';
     }
 
     connectedCallback() {
-        this.generateNumbers();
+        this.recommendMenu();
         this.render();
     }
 
-    generateNumbers() {
-        this.numbers.clear();
-        while (this.numbers.size < 6) {
-            const randomNumber = Math.floor(Math.random() * 45) + 1;
-            this.numbers.add(randomNumber);
-        }
+    recommendMenu() {
+        const randomIndex = Math.floor(Math.random() * this.menus.length);
+        this.selectedMenu = this.menus[randomIndex];
     }
 
     render() {
         this.shadowRoot.innerHTML = `
             <style>
-                .number-container {
-                    display: flex;
-                    justify-content: center;
-                    gap: 10px;
-                }
-                .number {
-                    width: 50px;
-                    height: 50px;
-                    border-radius: 50%;
-                    background-color: var(--secondary-color);
-                    color: white;
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
-                    font-size: 1.5rem;
+                .menu-display {
+                    font-size: 2rem;
                     font-weight: bold;
-                    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+                    color: var(--primary-color);
+                    margin: 20px 0;
+                    padding: 20px;
+                    border: 2px dashed var(--secondary-color);
+                    border-radius: 10px;
+                    background-color: rgba(0,0,0,0.05);
                 }
             </style>
-            <div class="number-container">
-                ${[...this.numbers].sort((a, b) => a - b).map(number => `<div class="number">${number}</div>`).join('')}
+            <div class="menu-display">
+                ${this.selectedMenu || 'Press the button!'}
             </div>
         `;
     }
 }
 
-customElements.define('lotto-numbers', LottoNumbers);
+customElements.define('dinner-menu', DinnerMenu);
 
 document.getElementById('generate-btn').addEventListener('click', () => {
-    const lottoNumbersElement = document.querySelector('lotto-numbers');
-    lottoNumbersElement.generateNumbers();
-    lottoNumbersElement.render();
+    const menuElement = document.querySelector('dinner-menu');
+    menuElement.recommendMenu();
+    menuElement.render();
 });
 
 // Theme toggle logic
