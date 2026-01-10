@@ -54,3 +54,25 @@ document.getElementById('generate-btn').addEventListener('click', () => {
     lottoNumbersElement.generateNumbers();
     lottoNumbersElement.render();
 });
+
+// Theme toggle logic
+const themeToggleBtn = document.getElementById('theme-toggle');
+const currentTheme = localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+
+if (currentTheme === 'dark') {
+    document.documentElement.setAttribute('data-theme', 'dark');
+    themeToggleBtn.textContent = '☀️';
+}
+
+themeToggleBtn.addEventListener('click', () => {
+    let theme = document.documentElement.getAttribute('data-theme');
+    if (theme === 'dark') {
+        document.documentElement.setAttribute('data-theme', 'light');
+        themeToggleBtn.textContent = '🌙';
+        localStorage.setItem('theme', 'light');
+    } else {
+        document.documentElement.setAttribute('data-theme', 'dark');
+        themeToggleBtn.textContent = '☀️';
+        localStorage.setItem('theme', 'dark');
+    }
+});
